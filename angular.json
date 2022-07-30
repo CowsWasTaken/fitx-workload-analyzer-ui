@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "fitx-analyer-ui": {
+    "fitx-workload-analyzer-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/fitx-analyer-ui",
+            "outputPath": "dist/fitx-workload-analyzer-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -75,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "fitx-analyer-ui:build:production"
+              "browserTarget": "fitx-workload-analyzer-ui:build:production"
             },
             "development": {
-              "browserTarget": "fitx-analyer-ui:build:development"
+              "browserTarget": "fitx-workload-analyzer-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -86,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "fitx-analyer-ui:build"
+            "browserTarget": "fitx-workload-analyzer-ui:build"
           }
         },
         "test": {

@@ -96,16 +96,19 @@ export class ChartComponent implements OnInit {
           }, title: {
             display: true,
             text: 'Workload'
-          }
+          },
         },
         xAxis: {
           type: "time",
           time: {
-            tooltipFormat: 'MM/DD/YYYY'
+            tooltipFormat: 'MM/DD/YYYY HH:mm',
+            displayFormats: {
+              'day': 'HH:mm',
+            },
           }, title: {
             display: true,
             text: "Date"
-          }
+          },
         }
       }
     };

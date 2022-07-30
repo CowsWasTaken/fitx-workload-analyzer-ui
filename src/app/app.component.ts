@@ -8,7 +8,7 @@ import {WorkloadRecord} from "./model/workloadRecord";
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit{
-  title = 'fitx-analyer-ui';
+  title = 'fitx-workload-analyzer-ui';
 
   constructor(private httpClient: HttpClient) {}
 
