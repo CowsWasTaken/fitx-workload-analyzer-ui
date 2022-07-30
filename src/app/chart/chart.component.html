@@ -1,0 +1,8 @@
+<div style="width: 100%"  class="chart">
+  <canvas baseChart *ngIf="this.data"
+          [type]="'line'"
+          [data]="lineChartData"
+          [options]="lineChartOptions"
+          [legend]="false">
+  </canvas>
+</div>
