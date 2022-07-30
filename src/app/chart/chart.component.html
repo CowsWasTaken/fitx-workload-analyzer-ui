@@ -1,8 +1,20 @@
 <div style="width: 100%"  class="chart">
+
+
   <canvas baseChart *ngIf="this.data"
           [type]="'line'"
           [data]="lineChartData"
           [options]="lineChartOptions"
           [legend]="false">
   </canvas>
+
+  <legend class="legend">
+  <div class="legend-box" *ngFor="let entry of colorStore | keyvalue">
+    <div class="legend-color-box" [style.background-color]="entry.value"></div>
+    <span class="legend-name">{{entry.key}}</span>
+  </div>
+  </legend>
+
+
+
 </div>
