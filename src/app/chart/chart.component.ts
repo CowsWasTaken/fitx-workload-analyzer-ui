@@ -14,7 +14,6 @@ export class ChartComponent implements OnInit {
 
   studioInfo = 'Fitx - Fürth Hardhöhe'
 
-
   colorStore = new Map<string, string>([
     ['Monday','rgba(51,194,46,0.2)'],
     ['Tuesday','rgba(131,46,143,0.2)'],
@@ -24,9 +23,6 @@ export class ChartComponent implements OnInit {
     ['Saturday','rgba(66,199,183,0.2)'],
     ['Sunday','rgba(88,56,155,0.2)'],
   ])
-
-  colorStoreKeys = this.colorStore.keys()
-
 
   data: WorkloadRecord[] = []
 
@@ -45,7 +41,6 @@ export class ChartComponent implements OnInit {
       }
     })
     this.initChart()
-    this.removeCanvasIfNecessary()
   }
 
   initChart() {
@@ -101,7 +96,7 @@ export class ChartComponent implements OnInit {
         xAxis: {
           type: "time",
           time: {
-            tooltipFormat: 'MM/DD/YYYY HH:mm',
+            tooltipFormat: 'DD/MM/YYYY HH:mm',
             displayFormats: {
               'day': 'HH:mm',
             },
@@ -126,23 +121,6 @@ export class ChartComponent implements OnInit {
       list.push({x: dateMillis, y: workload.percentage})
     }
     return list
-  }
-
-  // the canvas chart get initialized twice once with undefined data, so as an ugly workaround, this works
-  removeCanvasIfNecessary() {
-    let chartElements = document.getElementsByClassName("chart")
-    if (chartElements.length > 1) {
-      for (let i = 0; i < chartElements.length - 1; i++) {
-        chartElements[i].remove()
-      }
-    }
-  }
-
-  isNewDay(timestampOne: number, timestampTwo: number) {
-    const one = new Date(timestampOne * 1000)
-    const two = new Date(timestampTwo * 1000)
-
-    return one.getDay() !== two.getDay();
   }
 
   getColorForTimestamp(timestamp: number) {

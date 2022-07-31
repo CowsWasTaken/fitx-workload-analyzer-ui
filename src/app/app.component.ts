@@ -10,9 +10,7 @@ import {WorkloadRecord} from "./model/workloadRecord";
 export class AppComponent implements OnInit{
   title = 'fitx-workload-analyzer-ui';
 
-  constructor(private httpClient: HttpClient) {}
 
-  data: WorkloadRecord[] = []
 
   ngOnInit(): void {
 
