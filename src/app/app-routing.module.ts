@@ -3,19 +3,16 @@ import {RouterModule, Routes} from '@angular/router';
 import {ChartComponent} from "./chart/chart.component";
 import {WorkloadResolver} from "./workload.resolver";
 
-const routes: Routes = [];
+const routes: Routes = [  {
+  path: '',
+  component: ChartComponent,
+  resolve: {
+    workloadRecords: WorkloadResolver
+  }
+}];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes),
-    RouterModule.forRoot([
-      {
-        path: '',
-        component: ChartComponent,
-        resolve: {
-          workloadRecords: WorkloadResolver
-        }
-      }
-    ])],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ChartConfiguration, ChartOptions} from "chart.js";
+import {ChartConfiguration, ChartOptions, ScriptableLineSegmentContext, TooltipItem} from "chart.js";
 import {WorkloadRecord} from "../model/workloadRecord";
 import {ActivatedRoute} from "@angular/router";
 import 'chartjs-adapter-moment';
@@ -14,19 +14,15 @@ export class ChartComponent implements OnInit {
 
   studioInfo = 'Fitx - Fürth Hardhöhe'
 
-
   colorStore = new Map<string, string>([
-    ['Monday','rgba(51,194,46,0.2)'],
-    ['Tuesday','rgba(131,46,143,0.2)'],
-    ['Wednesday','rgba(197,52,101,0.2)'],
-    ['Thursday','rgba(168,127,58,0.2)'],
-    ['Friday','rgba(42,88,140,0.2)'],
-    ['Saturday','rgba(66,199,183,0.2)'],
-    ['Sunday','rgba(88,56,155,0.2)'],
+    ['Monday', 'rgba(51,194,46,0.2)'],
+    ['Tuesday', 'rgba(131,46,143,0.2)'],
+    ['Wednesday', 'rgba(197,52,101,0.2)'],
+    ['Thursday', 'rgba(168,127,58,0.2)'],
+    ['Friday', 'rgba(42,88,140,0.2)'],
+    ['Saturday', 'rgba(66,199,183,0.2)'],
+    ['Sunday', 'rgba(88,56,155,0.2)'],
   ])
-
-  colorStoreKeys = this.colorStore.keys()
-
 
   data: WorkloadRecord[] = []
 
@@ -45,7 +41,6 @@ export class ChartComponent implements OnInit {
       }
     })
     this.initChart()
-    this.removeCanvasIfNecessary()
   }
 
   initChart() {
@@ -64,8 +59,8 @@ export class ChartComponent implements OnInit {
           // borderColor: 'black',
           backgroundColor: 'rgba(255,0,0,0.3)',
           segment: {
-            borderColor: (ctx: any) => this.colorize(ctx),
-            backgroundColor: (ctx: any) => this.colorize(ctx),
+            borderColor: (ctx: ScriptableLineSegmentContext) => this.colorize(ctx),
+            backgroundColor: (ctx: ScriptableLineSegmentContext) => this.colorize(ctx),
           }
         }
       ],
@@ -78,6 +73,10 @@ export class ChartComponent implements OnInit {
         title: {
           text: this.studioInfo,
           display: true
+        }, tooltip: {
+          callbacks: {
+            footer: (tooltipItems: TooltipItem<'line'>[]): string | string[] => this.createFooter(tooltipItems)
+          }
         }
       },
       elements: {
@@ -101,7 +100,7 @@ export class ChartComponent implements OnInit {
         xAxis: {
           type: "time",
           time: {
-            tooltipFormat: 'MM/DD/YYYY HH:mm',
+            tooltipFormat: 'DD/MM/YYYY HH:mm',
             displayFormats: {
               'day': 'HH:mm',
             },
@@ -114,7 +113,7 @@ export class ChartComponent implements OnInit {
     };
   }
 
-  colorize(ctx: any) {
+  colorize(ctx: ScriptableLineSegmentContext) {
     const index = ctx.p0DataIndex
     return this.getColorForTimestamp(this.data[index].timestamp)
   }
@@ -128,29 +127,20 @@ export class ChartComponent implements OnInit {
     return list
   }
 
-  // the canvas chart get initialized twice once with undefined data, so as an ugly workaround, this works
-  removeCanvasIfNecessary() {
-    let chartElements = document.getElementsByClassName("chart")
-    if (chartElements.length > 1) {
-      for (let i = 0; i < chartElements.length - 1; i++) {
-        chartElements[i].remove()
-      }
-    }
-  }
-
-  isNewDay(timestampOne: number, timestampTwo: number) {
-    const one = new Date(timestampOne * 1000)
-    const two = new Date(timestampTwo * 1000)
-
-    return one.getDay() !== two.getDay();
-  }
-
   getColorForTimestamp(timestamp: number) {
-    const dayOfWeekName = new Date(timestamp * 1000).toLocaleDateString(
-      'en-US', {weekday: 'long'}
-    );
+    const dayOfWeekName = this.timestampToWeekday(timestamp)
     return this.colorStore.get(dayOfWeekName)
   }
 
+  timestampToWeekday(timestamp: number) {
+    return new Date(timestamp * 1000).toLocaleDateString(
+      'en-US', {weekday: 'long'}
+    );
+  }
+
+  createFooter(tooltipItems: TooltipItem<'line'>[]): string | string[] {
+    const timestamp = this.data[tooltipItems[0].dataIndex].timestamp
+    return this.timestampToWeekday(timestamp)
+  }
 
 }
