@@ -1,4 +1,4 @@
-export interface WorkloadRecord {
+export interface WorkloadRecordDto {
   timestamp: number,
   percentage: number
 }

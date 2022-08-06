@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartConfiguration, ChartOptions, ScriptableLineSegmentContext, TooltipItem} from "chart.js";
-import {WorkloadRecord} from "../model/workloadRecord";
+import {WorkloadRecordDto} from "../model/workload-record.dto";
 import {ActivatedRoute} from "@angular/router";
 import 'chartjs-adapter-moment';
+import {StudioDto} from "../model/studio.dto";
 
 
 @Component({
@@ -12,7 +13,7 @@ import 'chartjs-adapter-moment';
 })
 export class ChartComponent implements OnInit {
 
-  studioInfo = 'Fitx - Fürth Hardhöhe'
+  studio: StudioDto = {name: 'undefined', workloadRecords: [], id: 0}
 
   colorStore = new Map<string, string>([
     ['Monday', 'rgba(51,194,46,0.2)'],
@@ -24,8 +25,6 @@ export class ChartComponent implements OnInit {
     ['Sunday', 'rgba(88,56,155,0.2)'],
   ])
 
-  data: WorkloadRecord[] = []
-
   lineChartData: ChartConfiguration<'line'>['data'] | undefined
   lineChartOptions: ChartOptions<'line'> | undefined
 
@@ -36,8 +35,8 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe((response: any) => {
-      if (response.workloadRecords) {
-        this.data = response.workloadRecords
+      if (response.studio) {
+        this.studio = response.studio
       }
     })
     this.initChart()
@@ -52,7 +51,7 @@ export class ChartComponent implements OnInit {
     return {
       datasets: [
         {
-          data: this.extractData(),
+          data: this.extractData(this.studio.workloadRecords),
           label: 'Percentage',
           fill: true,
           tension: 0.5,
@@ -71,7 +70,7 @@ export class ChartComponent implements OnInit {
     return {
       plugins: {
         title: {
-          text: this.studioInfo,
+          text: this.studio?.name,
           display: true
         }, tooltip: {
           callbacks: {
@@ -115,12 +114,12 @@ export class ChartComponent implements OnInit {
 
   colorize(ctx: ScriptableLineSegmentContext) {
     const index = ctx.p0DataIndex
-    return this.getColorForTimestamp(this.data[index].timestamp)
+    return this.getColorForTimestamp(this.studio.workloadRecords[index].timestamp)
   }
 
-  extractData() {
+  extractData(workloadRecords: WorkloadRecordDto[]) {
     let list: { x: number, y: number }[] = []
-    for (const workload of this.data) {
+    for (const workload of workloadRecords) {
       const dateMillis = workload.timestamp * 1000
       list.push({x: dateMillis, y: workload.percentage})
     }
@@ -139,8 +138,16 @@ export class ChartComponent implements OnInit {
   }
 
   createFooter(tooltipItems: TooltipItem<'line'>[]): string | string[] {
-    const timestamp = this.data[tooltipItems[0].dataIndex].timestamp
+    const timestamp = this.studio.workloadRecords[tooltipItems[0].dataIndex].timestamp
     return this.timestampToWeekday(timestamp)
+  }
+
+  getColorStoreOrdered() {
+    let list : {day: string, color: string}[] = []
+    for (const colorStoreElement of this.colorStore.entries()) {
+      list.push({day: colorStoreElement[0], color: colorStoreElement[1]})
+    }
+    return list
   }
 
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {WorkloadRecord} from "./model/workloadRecord";
 import {environment} from "../environments/environment";
+import {StudioDto} from "./model/studio.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class WorkloadDataService {
 
   private url = environment.backendUrl;
 
-  getRecords() {
-   return  this.http.get<WorkloadRecord[]>(this.url)
+  getStudioHistory(studioId: number) {
+   return  this.http.get<StudioDto>(`${this.url}/studio/${studioId}/history`)
   }
 }

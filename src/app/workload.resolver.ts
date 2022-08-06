@@ -1,21 +1,19 @@
-import { Injectable } from '@angular/core';
-import {
-  Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot
-} from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {WorkloadDataService} from "./workload-data.service";
-import {WorkloadRecord} from "./model/workloadRecord";
+import {StudioDto} from "./model/studio.dto";
 
 @Injectable({
   providedIn: 'root'
 })
-export class WorkloadResolver implements Resolve<WorkloadRecord[]> {
+export class WorkloadResolver implements Resolve<StudioDto> {
 
   constructor(private workloadService: WorkloadDataService) {
   }
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<WorkloadRecord[]> {
-    return this.workloadService.getRecords();
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<StudioDto> {
+    const studioId = parseInt(route.paramMap.get('id')!)
+    return this.workloadService.getStudioHistory(studioId);
   }
 }
