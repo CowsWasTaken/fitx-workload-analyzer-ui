@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {WorkloadRecord} from "./model/workloadRecord";
 
 @Component({
   selector: 'app-root',
@@ -9,10 +7,6 @@ import {WorkloadRecord} from "./model/workloadRecord";
 })
 export class AppComponent implements OnInit{
   title = 'fitx-workload-analyzer-ui';
-
-  constructor(private httpClient: HttpClient) {}
-
-  data: WorkloadRecord[] = []
 
   ngOnInit(): void {
 
