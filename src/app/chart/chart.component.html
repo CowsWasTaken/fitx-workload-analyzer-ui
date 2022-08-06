@@ -1,7 +1,7 @@
 <div style="width: 100%"  class="chart">
 
 
-  <canvas baseChart *ngIf="this.data"
+  <canvas baseChart *ngIf="this.studio"
           [type]="'line'"
           [data]="lineChartData"
           [options]="lineChartOptions"
@@ -9,9 +9,9 @@
   </canvas>
 
   <legend class="legend">
-  <div class="legend-box" *ngFor="let entry of colorStore | keyvalue">
-    <div class="legend-color-box" [style.background-color]="entry.value"></div>
-    <span class="legend-name">{{entry.key}}</span>
+  <div class="legend-box" *ngFor="let entry of getColorStoreOrdered()">
+    <div class="legend-color-box" [style.background-color]="entry.color"></div>
+    <span class="legend-name">{{entry.day}}</span>
   </div>
   </legend>
 

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  backendUrl: "https://fitx-workload-analyzer.herokuapp.com/history"
+  backendUrl: "https://fitx-workload-analyzer.herokuapp.com"
 };
 
 /*
