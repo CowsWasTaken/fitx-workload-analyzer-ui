@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {WorkloadDataService} from "./workload-data.service";
-import {StudioDto} from "./model/studio.dto";
+import {WorkloadDataService} from "../workload-data.service";
+import {StudioDto} from "../model/studio.dto";
 
 @Injectable({
   providedIn: 'root'
