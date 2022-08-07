@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {WorkloadDataService} from "./workload-data.service";
 
 @Component({
   selector: 'app-root',
