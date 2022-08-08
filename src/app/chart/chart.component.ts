@@ -36,7 +36,7 @@ export class ChartComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe((response: any) => {
       if (response.studio) {
-        this.studio = response.studio
+        this.studio = ChartComponent.formatStudio(response.studio)
       }
     })
     this.initChart()
@@ -148,6 +148,14 @@ export class ChartComponent implements OnInit {
       list.push({day: colorStoreElement[0], color: colorStoreElement[1]})
     }
     return list
+  }
+
+  private static formatStudio(studio: StudioDto) : StudioDto{
+    studio.workloadRecords = ChartComponent.sortWorkloads(studio.workloadRecords)
+    return studio
+  }
+  private static sortWorkloads(workloadRecords: WorkloadRecordDto[]) {
+    return workloadRecords.sort((one, two) => (one.timestamp > two.timestamp ? -1 : 1))
   }
 
 }
